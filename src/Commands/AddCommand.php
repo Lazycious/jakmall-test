@@ -6,71 +6,35 @@ use Illuminate\Console\Command;
 
 class AddCommand extends Command
 {
-    /**
-     * @var string
-     */
+
     protected $signature;
 
-    /**
-     * @var string
-     */
     protected $description;
 
     public function __construct()
     {
-        $commandVerb = $this->getCommandVerb();
-
         $this->signature = sprintf(
-            '%s {numbers* : The numbers to be %s}',
-            $commandVerb,
-            $this->getCommandPassiveVerb()
+            'add {numbers* : The numbers to be added}'
         );
-        $this->description = sprintf('%s all given Numbers', ucfirst($commandVerb));
-    }
-
-    protected function getCommandVerb(): string
-    {
-        return 'add';
-    }
-
-    protected function getCommandPassiveVerb(): string
-    {
-        return 'added';
+        $this->description = sprintf(
+            'Add all given Numbers'
+        );
+        parent::__construct();
     }
 
     public function handle(): void
     {
-        $numbers = $this->getInput();
-        $description = $this->generateCalculationDescription($numbers);
-        $result = $this->calculateAll($numbers);
-
-        $this->comment(sprintf('%s = %s', $description, $result));
+        $number = $this->argument('numbers');
+        $opration = implode(sprintf(' %s ','+'),$number);
+        $result = $this->calculateData($number);
+        $this->comment(
+            sprintf(
+                '%s = %s', $opration, $result
+            )
+        );
     }
 
-    protected function getInput(): array
-    {
-        return $this->argument('numbers');
-    }
-
-    protected function generateCalculationDescription(array $numbers): string
-    {
-        $operator = $this->getOperator();
-        $glue = sprintf(' %s ', $operator);
-
-        return implode($glue, $numbers);
-    }
-
-    protected function getOperator(): string
-    {
-        return '+';
-    }
-
-    /**
-     * @param array $numbers
-     *
-     * @return float|int
-     */
-    protected function calculateAll(array $numbers)
+    protected function calculateData(array $numbers)
     {
         $number = array_pop($numbers);
 
@@ -78,15 +42,9 @@ class AddCommand extends Command
             return $number;
         }
 
-        return $this->calculate($this->calculateAll($numbers), $number);
+        return $this->calculate($this->calculateData($numbers), $number);
     }
 
-    /**
-     * @param int|float $number1
-     * @param int|float $number2
-     *
-     * @return int|float
-     */
     protected function calculate($number1, $number2)
     {
         return $number1 + $number2;

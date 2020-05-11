@@ -28,10 +28,8 @@ class PowCommand extends Command
         $exp = $this->argument('exp');
         $opration = $number.' ^ '.$exp;
         $result = pow($number,$exp);
-        $this->comment(
-            sprintf(
-                '%s = %s', $opration, $result
-            )
-        );
+        $output = sprintf('%s = %s', $opration, $result);
+        logCalculation("pow", $opration, $result, $output);
+        $this->comment($output);
     }
 }

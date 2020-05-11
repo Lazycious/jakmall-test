@@ -27,11 +27,9 @@ class DivideCommand extends Command
         $number = $this->argument('numbers');
         $opration = implode(sprintf(' %s ','/'),$number);
         $result = $this->calculateData($number);
-        $this->comment(
-            sprintf(
-                '%s = %s', $opration, $result
-            )
-        );
+        $output = sprintf('%s = %s', $opration, $result);
+        logCalculation("divide", $opration, $result, $output);
+        $this->comment($output);
     }
 
     protected function calculateData(array $numbers)

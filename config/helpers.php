@@ -89,3 +89,20 @@ function writeData($data): void
         file_put_contents($filename, $data);
     }
 }
+
+function extractData($data, $ops): string
+{
+    $temp = "";
+    $tempCount = 1;
+    $countData = count($data);
+    foreach( $data as $element ) {  
+        if($tempCount < $countData){
+            $temp .= $element." ".$ops." ";
+        }else{
+            $temp .= $element;
+        }
+        $tempCount++;
+    } 
+
+    return $temp;
+}

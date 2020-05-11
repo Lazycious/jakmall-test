@@ -43,7 +43,7 @@ class HistoryListCommand extends Command
         }
 
         $data->transform(function($datum, $index) {
-            return collect($datum)->prepend($index, 'no')->forget('identifier')->toArray();
+            return collect($datum)->prepend($index +1, 'no')->forget('identifier')->toArray();
         });
 
         if (count($data) === 0) {
